@@ -7,6 +7,7 @@
 
 import UIKit
 
+
 class ProductCell: UICollectionViewCell {
     
     //    let imageProduct: UIImageView = {
@@ -17,46 +18,54 @@ class ProductCell: UICollectionViewCell {
     
     let imageProduct: UIView = {
         let imageView = UIView()
-        imageView.frame = CGRect(x: 10, y: 0, width: 30, height: 30)
         imageView.backgroundColor = .blue
         return imageView
     }()
     
     let titleProduct: UILabel = {
         let label = UILabel()
+        label.numberOfLines = 2
         label.font = UIFont.boldSystemFont(ofSize: 14)
+        label.lineBreakMode = .byTruncatingTail
         return label
     }()
     
     let priceProduct: UILabel = {
         let label = UILabel()
+        label.numberOfLines = 1
         label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.lineBreakMode = .byTruncatingTail
         return label
     }()
     
     let locationProduct: UILabel = {
         let label = UILabel()
+        label.numberOfLines = 1
         label.font = UIFont.systemFont(ofSize: 12)
+        label.lineBreakMode = .byTruncatingTail
         label.textColor = .gray
         return label
     }()
     
     let createDateProduct: UILabel = {
         let label = UILabel()
+        label.numberOfLines = 1
         label.font = UIFont.systemFont(ofSize: 12)
+        label.lineBreakMode = .byTruncatingTail
         label.textColor = .gray
         return label
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        print("OK")
+
         setupViews()
     }
     
     
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+     
     }
     
     private func setupViews() {
@@ -78,16 +87,20 @@ class ProductCell: UICollectionViewCell {
             imageProduct.trailingAnchor.constraint(equalTo: trailingAnchor),
             
             titleProduct.leadingAnchor.constraint(equalTo: leadingAnchor),
-            titleProduct.topAnchor.constraint(equalTo: imageProduct.bottomAnchor),
+            titleProduct.topAnchor.constraint(equalTo: imageProduct.bottomAnchor, constant: 8),
+            titleProduct.trailingAnchor.constraint(equalTo: trailingAnchor),
             
             priceProduct.leadingAnchor.constraint(equalTo: leadingAnchor),
-            priceProduct.topAnchor.constraint(equalTo: titleProduct.bottomAnchor),
+            priceProduct.topAnchor.constraint(equalTo: titleProduct.bottomAnchor, constant: 8),
+            priceProduct.trailingAnchor.constraint(equalTo: trailingAnchor),
             
             locationProduct.leadingAnchor.constraint(equalTo: leadingAnchor),
-            locationProduct.topAnchor.constraint(equalTo: priceProduct.bottomAnchor),
+            locationProduct.topAnchor.constraint(equalTo: priceProduct.bottomAnchor, constant: 8),
+            locationProduct.trailingAnchor.constraint(equalTo: trailingAnchor),
             
             createDateProduct.leadingAnchor.constraint(equalTo: leadingAnchor),
-            createDateProduct.topAnchor.constraint(equalTo: locationProduct.bottomAnchor),
+            createDateProduct.topAnchor.constraint(equalTo: locationProduct.bottomAnchor, constant: 4),
+            createDateProduct.trailingAnchor.constraint(equalTo: trailingAnchor),
             
             createDateProduct.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
