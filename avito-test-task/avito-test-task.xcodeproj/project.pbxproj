@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C791D2692A99C2B40084295C /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C791D2682A99C2B40084295C /* NetworkError.swift */; };
+		C791D26B2A99C2DA0084295C /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C791D26A2A99C2DA0084295C /* NetworkService.swift */; };
+		C791D26D2A99C34C0084295C /* ProductNetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C791D26C2A99C34C0084295C /* ProductNetworkService.swift */; };
+		C791D26F2A99C3910084295C /* GetProductResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C791D26E2A99C3910084295C /* GetProductResponse.swift */; };
+		C791D2712A99C3E00084295C /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = C791D2702A99C3E00084295C /* Product.swift */; };
+		C791D2732A99C78B0084295C /* ProductViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C791D2722A99C78B0084295C /* ProductViewModel.swift */; };
 		C7B906522A98710700C8DDBB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7B906512A98710700C8DDBB /* AppDelegate.swift */; };
 		C7B906542A98710700C8DDBB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7B906532A98710700C8DDBB /* SceneDelegate.swift */; };
 		C7B906592A98710700C8DDBB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C7B906572A98710700C8DDBB /* Main.storyboard */; };
@@ -17,6 +23,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C791D2682A99C2B40084295C /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
+		C791D26A2A99C2DA0084295C /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		C791D26C2A99C34C0084295C /* ProductNetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductNetworkService.swift; sourceTree = "<group>"; };
+		C791D26E2A99C3910084295C /* GetProductResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetProductResponse.swift; sourceTree = "<group>"; };
+		C791D2702A99C3E00084295C /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
+		C791D2722A99C78B0084295C /* ProductViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductViewModel.swift; sourceTree = "<group>"; };
 		C7B9064E2A98710700C8DDBB /* avito-test-task.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "avito-test-task.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7B906512A98710700C8DDBB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C7B906532A98710700C8DDBB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -39,6 +51,39 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C791D2642A99C2510084295C /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				C7B906512A98710700C8DDBB /* AppDelegate.swift */,
+				C7B906532A98710700C8DDBB /* SceneDelegate.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		C791D2652A99C25F0084295C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				C791D2682A99C2B40084295C /* NetworkError.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		C791D2662A99C2660084295C /* NetworkService */ = {
+			isa = PBXGroup;
+			children = (
+				C791D26A2A99C2DA0084295C /* NetworkService.swift */,
+			);
+			path = NetworkService;
+			sourceTree = "<group>";
+		};
+		C791D2672A99C27F0084295C /* View */ = {
+			isa = PBXGroup;
+			children = (
+				C7B906572A98710700C8DDBB /* Main.storyboard */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		C7B906452A98710700C8DDBB = {
 			isa = PBXGroup;
 			children = (
@@ -60,7 +105,6 @@
 			children = (
 				C7B906652A9871E800C8DDBB /* Application */,
 				C7B906682A98802700C8DDBB /* ProductList */,
-				C7B906572A98710700C8DDBB /* Main.storyboard */,
 				C7B9065A2A98710800C8DDBB /* Assets.xcassets */,
 				C7B9065C2A98710800C8DDBB /* LaunchScreen.storyboard */,
 				C7B9065F2A98710800C8DDBB /* Info.plist */,
@@ -71,8 +115,10 @@
 		C7B906652A9871E800C8DDBB /* Application */ = {
 			isa = PBXGroup;
 			children = (
-				C7B906512A98710700C8DDBB /* AppDelegate.swift */,
-				C7B906532A98710700C8DDBB /* SceneDelegate.swift */,
+				C791D2672A99C27F0084295C /* View */,
+				C791D2652A99C25F0084295C /* Model */,
+				C791D2662A99C2660084295C /* NetworkService */,
+				C791D2642A99C2510084295C /* Controller */,
 			);
 			path = Application;
 			sourceTree = "<group>";
@@ -82,6 +128,10 @@
 			children = (
 				C7B906662A987FFB00C8DDBB /* ProductListController.swift */,
 				C7B906692A98805C00C8DDBB /* ProductCell.swift */,
+				C791D26C2A99C34C0084295C /* ProductNetworkService.swift */,
+				C791D26E2A99C3910084295C /* GetProductResponse.swift */,
+				C791D2702A99C3E00084295C /* Product.swift */,
+				C791D2722A99C78B0084295C /* ProductViewModel.swift */,
 			);
 			path = ProductList;
 			sourceTree = "<group>";
@@ -159,8 +209,14 @@
 			files = (
 				C7B906672A987FFB00C8DDBB /* ProductListController.swift in Sources */,
 				C7B9066A2A98805C00C8DDBB /* ProductCell.swift in Sources */,
+				C791D2712A99C3E00084295C /* Product.swift in Sources */,
 				C7B906522A98710700C8DDBB /* AppDelegate.swift in Sources */,
+				C791D2732A99C78B0084295C /* ProductViewModel.swift in Sources */,
+				C791D26F2A99C3910084295C /* GetProductResponse.swift in Sources */,
 				C7B906542A98710700C8DDBB /* SceneDelegate.swift in Sources */,
+				C791D26D2A99C34C0084295C /* ProductNetworkService.swift in Sources */,
+				C791D26B2A99C2DA0084295C /* NetworkService.swift in Sources */,
+				C791D2692A99C2B40084295C /* NetworkError.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

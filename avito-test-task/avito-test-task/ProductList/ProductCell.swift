@@ -10,17 +10,17 @@ import UIKit
 
 class ProductCell: UICollectionViewCell {
     
-    //    let imageProduct: UIImageView = {
-    //        let imageView = UIImageView()
-    //        imageView.contentMode = .scaleToFill
-    //        return imageView
-    //    }()
-    
-    let imageProduct: UIView = {
-        let imageView = UIView()
-        imageView.backgroundColor = .blue
+    let imageProduct: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
         return imageView
     }()
+    
+    //    let imageProduct: UIView = {
+    //        let imageView = UIView()
+    //        imageView.backgroundColor = .blue
+    //        return imageView
+    //    }()
     
     let titleProduct: UILabel = {
         let label = UILabel()
@@ -76,7 +76,7 @@ class ProductCell: UICollectionViewCell {
         addSubview(locationProduct)
         addSubview(createDateProduct)
     }
-
+    
     private func constraintsViews() {
         imageProduct.translatesAutoresizingMaskIntoConstraints = false
         titleProduct.translatesAutoresizingMaskIntoConstraints = false

@@ -7,9 +7,21 @@
 
 import UIKit
 
-class ProductListController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+class ProductListController: UIViewController {
+    //    private var productViewModel: ProductViewModel
+    //
+    //    init(productViewModel: ProductViewModel) {
+    //           self.productViewModel = productViewModel
+    //           super.init(nibName: nil, bundle: nil)
+    //       }
+    //
+    //    required init?(coder: NSCoder) {
+    //        fatalError("init(coder:) has not been implemented")
+    //    }
     
-    lazy var collectionView: UICollectionView = {
+    private var products = [Product]()
+    
+    private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collection.translatesAutoresizingMaskIntoConstraints = false
@@ -25,13 +37,14 @@ class ProductListController: UIViewController, UICollectionViewDelegate, UIColle
         
         setupViews()
         setupConstraints()
+        fetchData()
     }
     
-    func setupViews() {
+    private func setupViews() {
         view.addSubview(collectionView)
     }
     
-    func setupConstraints() {
+    private func setupConstraints() {
         let safeArea = view.safeAreaLayoutGuide
         
         NSLayoutConstraint.activate([
@@ -42,22 +55,58 @@ class ProductListController: UIViewController, UICollectionViewDelegate, UIColle
         ])
     }
     
+    func fetchData() {
+        let jsonUrlString = "https://www.avito.st/s/interns-ios/main-page.json"
+               guard let url = URL(string: jsonUrlString) else { return }
+               URLSession.shared.dataTask(with: url) { (data, response, error) in
+                   
+                   guard let data = data else { return }
+                   var dataResponse: DataResponse?
+                   do {
+                       dataResponse = try JSONDecoder().decode(DataResponse.self, from: data)
+                       if let advertisements = dataResponse?.advertisements {
+                           self.products = advertisements
+                       }
+                       DispatchQueue.main.async {
+                           self.collectionView.reloadData()
+                       }
+                   } catch let error {
+                       print("error", error)
+                   }
+               }.resume()
+    }
+}
+
+extension ProductListController: UICollectionViewDelegate {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 15
+        return products.count
     }
-    
+}
+
+extension ProductListController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.idProductCell, for: indexPath) as! ProductCell
-        
-        cell.titleProduct.text = "Абонемент в фитнес клуб xfit на Кирова безлимит"
-        cell.priceProduct.text = "3000 $"
-        cell.locationProduct.text = "Новосибирск, Площадь Ленина"
-        cell.createDateProduct.text = "Вчера, 14:11"
+            
+            let product = products[indexPath.item]
+            
+            DispatchQueue.global().async {
+                guard let imageUrl = URL(string: product.imageUrl ?? "" ) else { return }
+                guard let imageData = try? Data(contentsOf: imageUrl) else { return }
+                
+                DispatchQueue.main.async {
+                    cell.imageProduct.image =  UIImage(data: imageData)
+                }
+            }
+            
+            cell.titleProduct.text = product.title
+            cell.priceProduct.text = product.price
+            cell.locationProduct.text = product.location
+            cell.createDateProduct.text = product.createdDate ?? " "
         
         return cell
     }
@@ -77,8 +126,6 @@ extension ProductListController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return Constant.sectionInsert
     }
-    
-    
 }
 
 private enum Constant {
