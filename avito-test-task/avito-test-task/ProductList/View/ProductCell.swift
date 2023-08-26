@@ -107,8 +107,8 @@ class ProductCell: UICollectionViewCell {
 }
 
 private enum Constraint {
-    static let max: CGFloat = 8
-    static let min: CGFloat = 4
+    static let max: CGFloat = 4
+    static let min: CGFloat = 1
 }
 
 private enum SizeLabel {
