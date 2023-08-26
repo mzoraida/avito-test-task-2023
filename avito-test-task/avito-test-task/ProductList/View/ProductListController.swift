@@ -57,23 +57,23 @@ class ProductListController: UIViewController {
     
     func fetchData() {
         let jsonUrlString = "https://www.avito.st/s/interns-ios/main-page.json"
-               guard let url = URL(string: jsonUrlString) else { return }
-               URLSession.shared.dataTask(with: url) { (data, response, error) in
-                   
-                   guard let data = data else { return }
-                   var dataResponse: DataResponse?
-                   do {
-                       dataResponse = try JSONDecoder().decode(DataResponse.self, from: data)
-                       if let advertisements = dataResponse?.advertisements {
-                           self.products = advertisements
-                       }
-                       DispatchQueue.main.async {
-                           self.collectionView.reloadData()
-                       }
-                   } catch let error {
-                       print("error", error)
-                   }
-               }.resume()
+        guard let url = URL(string: jsonUrlString) else { return }
+        URLSession.shared.dataTask(with: url) { (data, response, error) in
+            
+            guard let data = data else { return }
+            var advertisements: Advertisements?
+            do {
+                advertisements = try JSONDecoder().decode(Advertisements.self, from: data)
+                if let advertisement = advertisements?.advertisements {
+                    self.products = advertisement
+                }
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                }
+            } catch let error {
+                print("error", error)
+            }
+        }.resume()
     }
 }
 
@@ -91,22 +91,28 @@ extension ProductListController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.idProductCell, for: indexPath) as! ProductCell
-            
-            let product = products[indexPath.item]
-            
+        
+        let product = products[indexPath.item]
+        
+        if let image = Cache.shared.get(key: product.imageUrl) {
+            cell.imageProduct.image = image
+        } else {
             DispatchQueue.global().async {
-                guard let imageUrl = URL(string: product.imageUrl ?? "" ) else { return }
+                guard let imageUrl = URL(string: product.imageUrl ?? " " ) else { return }
                 guard let imageData = try? Data(contentsOf: imageUrl) else { return }
                 
                 DispatchQueue.main.async {
+                    guard let image = UIImage(data: imageData) else { return }
+                    Cache.shared.save(key: product.imageUrl, value: image)
                     cell.imageProduct.image =  UIImage(data: imageData)
                 }
             }
-            
-            cell.titleProduct.text = product.title
-            cell.priceProduct.text = product.price
-            cell.locationProduct.text = product.location
-            cell.createDateProduct.text = product.createdDate ?? " "
+        }
+        
+        cell.titleProduct.text = product.title
+        cell.priceProduct.text = product.price
+        cell.locationProduct.text = product.location
+        cell.createDateProduct.text = product.createdDate
         
         return cell
     }

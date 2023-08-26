@@ -7,12 +7,12 @@
 
 import Foundation
 
-struct DataResponse
+struct Advertisements
 {
     let advertisements: [Product]
 }
 
-extension DataResponse: Decodable {
+extension Advertisements: Decodable {
     enum CodingKeys: String, CodingKey {
         case advertisements = "advertisements"
     }
@@ -24,7 +24,7 @@ struct Product {
     var price: String
     var location: String
     var imageUrl: String?
-    var createdDate: String?
+    var createdDate: String
 }
 
 extension Product: Decodable {

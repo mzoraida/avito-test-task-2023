@@ -7,20 +7,15 @@
 
 import UIKit
 
-
 class ProductCell: UICollectionViewCell {
     
     let imageProduct: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = .scaleAspectFit
+        imageView.layer.masksToBounds = true
+        imageView.layer.cornerRadius = 10
         return imageView
     }()
-    
-    //    let imageProduct: UIView = {
-    //        let imageView = UIView()
-    //        imageView.backgroundColor = .blue
-    //        return imageView
-    //    }()
     
     let titleProduct: UILabel = {
         let label = UILabel()
@@ -63,7 +58,6 @@ class ProductCell: UICollectionViewCell {
         constraintsViews()
     }
     
-    
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         
@@ -78,6 +72,7 @@ class ProductCell: UICollectionViewCell {
     }
     
     private func constraintsViews() {
+        
         imageProduct.translatesAutoresizingMaskIntoConstraints = false
         titleProduct.translatesAutoresizingMaskIntoConstraints = false
         priceProduct.translatesAutoresizingMaskIntoConstraints = false
@@ -88,6 +83,7 @@ class ProductCell: UICollectionViewCell {
             imageProduct.leadingAnchor.constraint(equalTo: leadingAnchor),
             imageProduct.topAnchor.constraint(equalTo: topAnchor),
             imageProduct.trailingAnchor.constraint(equalTo: trailingAnchor),
+            imageProduct.heightAnchor.constraint(equalToConstant: contentView.frame.width),
             
             titleProduct.leadingAnchor.constraint(equalTo: leadingAnchor),
             titleProduct.topAnchor.constraint(equalTo: imageProduct.bottomAnchor, constant: Constraint.max),
