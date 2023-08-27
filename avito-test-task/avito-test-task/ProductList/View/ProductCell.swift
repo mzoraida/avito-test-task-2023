@@ -13,7 +13,7 @@ class ProductCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.layer.masksToBounds = true
-        imageView.layer.cornerRadius = 10
+        imageView.layer.cornerRadius = Constraint.cornerRadius
         return imageView
     }()
     
@@ -109,6 +109,8 @@ class ProductCell: UICollectionViewCell {
 private enum Constraint {
     static let max: CGFloat = 4
     static let min: CGFloat = 1
+    
+    static let cornerRadius: CGFloat = 10
 }
 
 private enum SizeLabel {

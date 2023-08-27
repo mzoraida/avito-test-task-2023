@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C75CC34F2A9B552F008E7F17 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75CC34E2A9B552F008E7F17 /* NetworkManager.swift */; };
 		C791D2692A99C2B40084295C /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C791D2682A99C2B40084295C /* NetworkError.swift */; };
 		C791D26B2A99C2DA0084295C /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C791D26A2A99C2DA0084295C /* NetworkService.swift */; };
 		C791D26D2A99C34C0084295C /* ProductNetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C791D26C2A99C34C0084295C /* ProductNetworkService.swift */; };
@@ -24,6 +25,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C75CC34E2A9B552F008E7F17 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		C791D2682A99C2B40084295C /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		C791D26A2A99C2DA0084295C /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		C791D26C2A99C34C0084295C /* ProductNetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductNetworkService.swift; sourceTree = "<group>"; };
@@ -175,6 +177,7 @@
 				C791D2772A9A1A000084295C /* View */,
 				C791D2762A9A19FA0084295C /* Model */,
 				C791D27A2A9A1A660084295C /* ProductNetwork */,
+				C75CC34E2A9B552F008E7F17 /* NetworkManager.swift */,
 			);
 			path = ProductList;
 			sourceTree = "<group>";
@@ -250,6 +253,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C75CC34F2A9B552F008E7F17 /* NetworkManager.swift in Sources */,
 				C7B906672A987FFB00C8DDBB /* ProductListController.swift in Sources */,
 				C7B9066A2A98805C00C8DDBB /* ProductCell.swift in Sources */,
 				C791D2712A99C3E00084295C /* Product.swift in Sources */,

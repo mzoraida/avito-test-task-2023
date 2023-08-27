@@ -8,6 +8,7 @@
 import UIKit
 
 class ProductListController: UIViewController {
+    
     //    private var productViewModel: ProductViewModel
     //
     //    init(productViewModel: ProductViewModel) {
@@ -18,7 +19,7 @@ class ProductListController: UIViewController {
     //    required init?(coder: NSCoder) {
     //        fatalError("init(coder:) has not been implemented")
     //    }
-    
+    private let url = "https://www.avito.st/s/interns-ios/main-page.json"
     private var products = [Product]()
     
     private lazy var collectionView: UICollectionView = {
@@ -56,24 +57,12 @@ class ProductListController: UIViewController {
     }
     
     func fetchData() {
-        let jsonUrlString = "https://www.avito.st/s/interns-ios/main-page.json"
-        guard let url = URL(string: jsonUrlString) else { return }
-        URLSession.shared.dataTask(with: url) { (data, response, error) in
-            
-            guard let data = data else { return }
-            var advertisements: Advertisements?
-            do {
-                advertisements = try JSONDecoder().decode(Advertisements.self, from: data)
-                if let advertisement = advertisements?.advertisements {
-                    self.products = advertisement
-                }
-                DispatchQueue.main.async {
-                    self.collectionView.reloadData()
-                }
-            } catch let error {
-                print("error", error)
+        NetworkManager.fetchData(url: url) { products in
+            self.products = products
+            DispatchQueue.main.async {
+                self.collectionView.reloadData()
             }
-        }.resume()
+        }
     }
 }
 
@@ -94,19 +83,8 @@ extension ProductListController: UICollectionViewDataSource {
         
         let product = products[indexPath.item]
         
-        if let image = Cache.shared.get(key: product.imageUrl) {
+        NetworkManager.downloadImage(url: product.imageUrl!) { image in
             cell.imageProduct.image = image
-        } else {
-            DispatchQueue.global().async {
-                guard let imageUrl = URL(string: product.imageUrl ?? " " ) else { return }
-                guard let imageData = try? Data(contentsOf: imageUrl) else { return }
-                
-                DispatchQueue.main.async {
-                    guard let image = UIImage(data: imageData) else { return }
-                    Cache.shared.save(key: product.imageUrl, value: image)
-                    cell.imageProduct.image =  UIImage(data: imageData)
-                }
-            }
         }
         
         cell.titleProduct.text = product.title
