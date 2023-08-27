@@ -83,14 +83,14 @@ extension ProductListController: UICollectionViewDataSource {
         
         let product = products[indexPath.item]
         
-        NetworkManager.downloadImage(url: product.imageUrl!) { image in
+        NetworkManager.downloadImage(url: product.image_url!) { image in
             cell.imageProduct.image = image
         }
         
         cell.titleProduct.text = product.title
         cell.priceProduct.text = product.price
         cell.locationProduct.text = product.location
-        cell.createDateProduct.text = product.createdDate
+        cell.createDateProduct.text = product.created_date
         
         return cell
     }
