@@ -9,16 +9,8 @@ import UIKit
 
 class ProductListController: UIViewController {
     
-    //    private var productViewModel: ProductViewModel
-    //
-    //    init(productViewModel: ProductViewModel) {
-    //           self.productViewModel = productViewModel
-    //           super.init(nibName: nil, bundle: nil)
-    //       }
-    //
-    //    required init?(coder: NSCoder) {
-    //        fatalError("init(coder:) has not been implemented")
-    //    }
+    var productViewModel = ProductViewModel()
+    
     private let url = "https://www.avito.st/s/interns-ios/main-page.json"
     private var products = [Product]()
     
@@ -35,7 +27,6 @@ class ProductListController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupViews()
         setupConstraints()
         fetchData()
@@ -57,13 +48,12 @@ class ProductListController: UIViewController {
     }
     
     func fetchData() {
-        NetworkManager.fetchData(url: url) { products in
-            self.products = products
-            DispatchQueue.main.async {
-                self.collectionView.reloadData()
-            }
-        }
-    }
+        productViewModel.getProducts { [weak self] response in
+               DispatchQueue.main.async {
+                   self?.collectionView.reloadData()
+               }
+           }
+       }
 }
 
 extension ProductListController: UICollectionViewDelegate {
@@ -72,7 +62,7 @@ extension ProductListController: UICollectionViewDelegate {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return products.count
+        return productViewModel.numberOfItemsInSection()
     }
 }
 
@@ -81,16 +71,16 @@ extension ProductListController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.idProductCell, for: indexPath) as! ProductCell
         
-        let product = products[indexPath.item]
+        let product = productViewModel.currentProduct(atIndexPath: indexPath)
         
-        NetworkManager.downloadImage(url: product.image_url!) { image in
+        NetworkManager.downloadImage(url: product.imageUrl!) { image in
             cell.imageProduct.image = image
         }
         
         cell.titleProduct.text = product.title
         cell.priceProduct.text = product.price
         cell.locationProduct.text = product.location
-        cell.createDateProduct.text = product.created_date
+        cell.createDateProduct.text = product.createdDate
         
         return cell
     }

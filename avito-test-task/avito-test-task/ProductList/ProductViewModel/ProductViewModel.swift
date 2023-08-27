@@ -7,30 +7,24 @@
 
 import Foundation
 
-//class ProductViewModel: NSObject {
-//    
-//    //    @IBOutlet weak var productNetworkService: ProductNetworkService!
-//    
-//    private var productNetworkService: ProductNetworkService
-//    
-//    init(productNetworkService: ProductNetworkService) {
-//        self.productNetworkService = productNetworkService
-//    }
-//    
-//    required init?(coder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
-//    
-//    private var products = [Product]()
-//    
-//    func getProducts(comletion: @escaping(GetProductResponse) -> ()) {
-//        ProductNetworkService.getProducts { [weak self] response in
-//            self?.products = response.products
-//            comletion(response)
-//        }
-//    }
-//    
-//    func numberOfItemsInSection() -> Int {
-//        return products.count
-//    }
-//}
+class ProductViewModel: NSObject {
+    
+    var productNetworkService = ProductNetworkService()
+    
+    private var products = [Product]()
+    
+    func getProducts(comletion: @escaping(GetProductResponse) -> ()) {
+        ProductNetworkService.getProducts { [weak self] response in
+            self?.products = response.products
+            comletion(response)
+        }
+    }
+    
+    func numberOfItemsInSection() -> Int {
+        return products.count
+    }
+    
+    func currentProduct(atIndexPath indexPath: IndexPath) -> Product {
+        return products[indexPath.item]
+    }
+}

@@ -20,8 +20,10 @@ class NetworkService {
             
             do {
                 let json = try JSONSerialization.jsonObject(with: data, options: [])
+                print("NETWORKSERVICE")
                 DispatchQueue.main.async {
                     completion(json)
+                    print("NETWORKSERVICE")
                 }
             } catch {
                 print(error)
