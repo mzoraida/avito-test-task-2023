@@ -19,6 +19,7 @@ class ProductListController: UIViewController {
         collection.register(ProductCell.self, forCellWithReuseIdentifier: Constant.idProductCell)
         collection.delegate = self
         collection.dataSource = self
+        
         return collection
     }()
     
@@ -77,6 +78,12 @@ extension ProductListController: UICollectionViewDataSource {
     
         return cell
     }
+    
+   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+            
+       guard let detailController = storyboard?.instantiateViewController(withIdentifier: "DetailController") as? DetailController else { return }
+       navigationController?.pushViewController(detailController, animated: true)
+        }
 }
 
 extension ProductListController: UICollectionViewDelegateFlowLayout {

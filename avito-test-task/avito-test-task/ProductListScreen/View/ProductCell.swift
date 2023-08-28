@@ -74,7 +74,10 @@ class ProductCell: UICollectionViewCell {
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        
+    }
+    
+    override func prepareForReuse() {
+        self.imageProduct.image = nil
     }
     
     private func setupViews() {
