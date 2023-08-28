@@ -9,7 +9,7 @@ import UIKit
 
 class ProductListController: UIViewController {
     
-    var productViewModel = ProductViewModel()
+    var productViewModel: ProductViewModelType? = ProductViewModel()
     
     private let url = "https://www.avito.st/s/interns-ios/main-page.json"
     private var products = [Product]()
@@ -27,6 +27,7 @@ class ProductListController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
         setupViews()
         setupConstraints()
         fetchData()
@@ -48,7 +49,7 @@ class ProductListController: UIViewController {
     }
     
     func fetchData() {
-        productViewModel.getProducts { [weak self] response in
+        productViewModel?.getProducts { [weak self] response in
             DispatchQueue.main.async {
                 self?.collectionView.reloadData()
             }
@@ -62,7 +63,7 @@ extension ProductListController: UICollectionViewDelegate {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return productViewModel.numberOfItemsInSection()
+        return productViewModel?.numberOfItemsInSection() ?? 0
     }
 }
 
@@ -71,16 +72,21 @@ extension ProductListController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.idProductCell, for: indexPath) as! ProductCell
         
+        guard let productViewModel = productViewModel else { return UICollectionViewCell() }
+        
+        let cellProductViewModel = productViewModel.cellViewModel(indexPath: indexPath)
         let product = productViewModel.currentProduct(atIndexPath: indexPath)
         
         ProductNetworkService.downloadImage(url: product.imageUrl!) { image in
             cell.imageProduct.image = image
         }
         
-        cell.titleProduct.text = product.title
-        cell.priceProduct.text = product.price
-        cell.locationProduct.text = product.location
-        cell.createDateProduct.text = product.createdDate
+        cell.productViewModel = cellProductViewModel
+        
+//        cell.titleProduct.text = product.title
+//        cell.priceProduct.text = product.price
+//        cell.locationProduct.text = product.location
+//        cell.createDateProduct.text = product.createdDate
         
         return cell
     }

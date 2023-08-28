@@ -7,17 +7,29 @@
 
 import Foundation
 
-class ProductViewModel: NSObject {
+protocol ProductViewModelType {
+    func numberOfItemsInSection() -> Int
+    func getProducts(comletion: @escaping(GetProductResponse) -> ())
+    func currentProduct(atIndexPath indexPath: IndexPath) -> Product
+    func cellViewModel(indexPath: IndexPath) -> ProductCellViewModelType?
+}
+
+class ProductViewModel: ProductViewModelType {
     
     var productNetworkService = ProductNetworkService()
     
-    private var products = [Product]()
+    var products = [Product]()
     
     func getProducts(comletion: @escaping(GetProductResponse) -> ()) {
         ProductNetworkService.getProducts { [weak self] response in
             self?.products = response.products
             comletion(response)
         }
+    }
+    
+    func cellViewModel(indexPath: IndexPath) -> ProductCellViewModelType? {
+        let product = products[indexPath.item]
+        return ProductCellViewModel(product: product)
     }
     
     func numberOfItemsInSection() -> Int {

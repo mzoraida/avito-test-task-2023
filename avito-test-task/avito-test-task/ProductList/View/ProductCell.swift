@@ -9,6 +9,16 @@ import UIKit
 
 class ProductCell: UICollectionViewCell {
     
+    weak var productViewModel: ProductCellViewModelType? {
+        willSet(productViewModel) {
+            guard let productViewModel = productViewModel else { return }
+            titleProduct.text = productViewModel.titleProduct
+            priceProduct.text = productViewModel.priceProduct
+            locationProduct.text = productViewModel.locationProduct
+            createDateProduct.text = productViewModel.createDateProduct
+        }
+    }
+    
     let imageProduct: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
