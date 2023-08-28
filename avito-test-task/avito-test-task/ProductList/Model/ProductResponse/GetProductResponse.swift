@@ -18,7 +18,6 @@ class GetProductResponse {
             guard let product = Product(dict: advertisementJSON) else { continue }
             products.append(product)
         }
-        print(products)
         self.products = products
     }
 }

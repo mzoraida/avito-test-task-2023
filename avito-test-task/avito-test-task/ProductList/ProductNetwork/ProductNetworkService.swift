@@ -6,11 +6,12 @@
 //
 
 import Foundation
+import UIKit
 
 class ProductNetworkService: NSObject {
     override init () {}
     
-   static func getProducts(comletion: @escaping(GetProductResponse) -> ()) {
+    static func getProducts(comletion: @escaping(GetProductResponse) -> ()) {
         let jsonUrlString = "https://www.avito.st/s/interns-ios/main-page.json"
         guard let url = URL(string: jsonUrlString) else { return }
         
@@ -20,6 +21,24 @@ class ProductNetworkService: NSObject {
                 comletion(response)
             } catch {
                 print(error)
+            }
+        }
+    }
+    
+    static func downloadImage(url: String, completion: @escaping (_ image: UIImage)->()) {
+        
+        if let image = Cache.shared.get(key: url) {
+            completion(image)
+        } else {
+            DispatchQueue.global().async {
+                guard let imageUrl = URL(string: url ) else { return }
+                guard let imageData = try? Data(contentsOf: imageUrl) else { return }
+                
+                DispatchQueue.main.async {
+                    guard let image = UIImage(data: imageData) else { return }
+                    Cache.shared.save(key: url, value: image)
+                    completion(image)
+                }
             }
         }
     }

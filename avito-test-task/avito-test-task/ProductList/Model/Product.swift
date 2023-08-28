@@ -7,22 +7,10 @@
 
 import Foundation
 
-//struct Advertisements: Decodable {
-//
-//    let advertisements: [Product]
-//}
-//
-//struct Product: Decodable {
-//    let id: String
-//    let title: String
-//    let price: String
-//    let location: String
-//    let image_url: String?
-//    let created_date: String
-//}
-
 struct Advertisements: Decodable {
-let advertisements: [Product]
+    
+    let advertisements: [Product]
+    
 }
 
 struct Product: Decodable {

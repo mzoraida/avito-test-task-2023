@@ -49,11 +49,11 @@ class ProductListController: UIViewController {
     
     func fetchData() {
         productViewModel.getProducts { [weak self] response in
-               DispatchQueue.main.async {
-                   self?.collectionView.reloadData()
-               }
-           }
-       }
+            DispatchQueue.main.async {
+                self?.collectionView.reloadData()
+            }
+        }
+    }
 }
 
 extension ProductListController: UICollectionViewDelegate {
@@ -73,7 +73,7 @@ extension ProductListController: UICollectionViewDataSource {
         
         let product = productViewModel.currentProduct(atIndexPath: indexPath)
         
-        NetworkManager.downloadImage(url: product.imageUrl!) { image in
+        ProductNetworkService.downloadImage(url: product.imageUrl!) { image in
             cell.imageProduct.image = image
         }
         

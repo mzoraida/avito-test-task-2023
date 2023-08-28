@@ -15,14 +15,10 @@ class Cache {
     private var dict: Dictionary<String, UIImage> = [:]
     
     func save(key: String?, value: UIImage) {
-        guard key == key else { return }
-        dict[key!] = value
+        dict[key ?? ""] = value
     }
     
     func get(key: String?) -> UIImage? {
-        if key == key {
-            return dict[key!]
-        }
-        return UIImage()
+        return dict[key ?? ""]
     }
 }
