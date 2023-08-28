@@ -16,6 +16,10 @@ class ProductCell: UICollectionViewCell {
             priceProduct.text = productViewModel.priceProduct
             locationProduct.text = productViewModel.locationProduct
             createDateProduct.text = productViewModel.createDateProduct
+            
+            productViewModel.loadImage { [weak self] image in
+                self?.imageProduct.image = image
+            }
         }
     }
     

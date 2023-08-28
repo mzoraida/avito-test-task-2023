@@ -7,13 +7,6 @@
 
 import Foundation
 
-protocol ProductViewModelType {
-    func numberOfItemsInSection() -> Int
-    func getProducts(comletion: @escaping(GetProductResponse) -> ())
-    func currentProduct(atIndexPath indexPath: IndexPath) -> Product
-    func cellViewModel(indexPath: IndexPath) -> ProductCellViewModelType?
-}
-
 class ProductViewModel: ProductViewModelType {
     
     var productNetworkService = ProductNetworkService()
@@ -34,9 +27,5 @@ class ProductViewModel: ProductViewModelType {
     
     func numberOfItemsInSection() -> Int {
         return products.count
-    }
-    
-    func currentProduct(atIndexPath indexPath: IndexPath) -> Product {
-        return products[indexPath.item]
     }
 }

@@ -6,13 +6,7 @@
 //
 
 import Foundation
-
-protocol ProductCellViewModelType: AnyObject {
-    var titleProduct: String { get }
-    var priceProduct: String { get }
-    var locationProduct: String { get }
-    var createDateProduct: String { get }
-}
+import UIKit
 
 class ProductCellViewModel: ProductCellViewModelType {
     
@@ -34,9 +28,23 @@ class ProductCellViewModel: ProductCellViewModelType {
         return product.createdDate
     }
     
+    var imageUrl: String? {
+        return product.imageUrl
+    }
+    
     init(product: Product) {
         self.product = product
     }
     
+    func loadImage(completion: @escaping (UIImage?) -> Void) {
+        guard let imageUrl = product.imageUrl else {
+            completion(nil)
+            return
+        }
+        
+        ProductNetworkService.downloadImage(url: imageUrl) { image in
+            completion(image)
+        }
+    }
     
 }

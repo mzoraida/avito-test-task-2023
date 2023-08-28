@@ -9,11 +9,8 @@ import UIKit
 
 class ProductListController: UIViewController {
     
-    var productViewModel: ProductViewModelType? = ProductViewModel()
-    
-    private let url = "https://www.avito.st/s/interns-ios/main-page.json"
-    private var products = [Product]()
-    
+    var productViewModel: ProductViewModelType?
+        
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -27,7 +24,8 @@ class ProductListController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        productViewModel = ProductViewModel()
         setupViews()
         setupConstraints()
         fetchData()
@@ -73,21 +71,10 @@ extension ProductListController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.idProductCell, for: indexPath) as! ProductCell
         
         guard let productViewModel = productViewModel else { return UICollectionViewCell() }
-        
         let cellProductViewModel = productViewModel.cellViewModel(indexPath: indexPath)
-        let product = productViewModel.currentProduct(atIndexPath: indexPath)
-        
-        ProductNetworkService.downloadImage(url: product.imageUrl!) { image in
-            cell.imageProduct.image = image
-        }
         
         cell.productViewModel = cellProductViewModel
-        
-//        cell.titleProduct.text = product.title
-//        cell.priceProduct.text = product.price
-//        cell.locationProduct.text = product.location
-//        cell.createDateProduct.text = product.createdDate
-        
+    
         return cell
     }
 }
