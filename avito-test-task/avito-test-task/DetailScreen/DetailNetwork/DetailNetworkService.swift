@@ -17,7 +17,7 @@ class DetailNetworkService {
         
         NetworkService.shared.getData(url: url) { (json) in
             do {
-                let response = try GetDetailResponse(json: json)
+                let response = try GetDetailResponse(json: json as! [String : Any])
                 comletion(response)
             } catch {
                 print(error)
