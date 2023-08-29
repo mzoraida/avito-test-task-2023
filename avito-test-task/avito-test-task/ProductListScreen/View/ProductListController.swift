@@ -73,15 +73,14 @@ extension ProductListController: UICollectionViewDataSource {
         
         guard let productViewModel = productViewModel else { return UICollectionViewCell() }
         let cellProductViewModel = productViewModel.cellViewModel(indexPath: indexPath)
-        
         cell.productViewModel = cellProductViewModel
-    
         return cell
     }
     
    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
             
        guard let detailController = storyboard?.instantiateViewController(withIdentifier: "DetailController") as? DetailController else { return }
+       DetailNetworkService.id = productViewModel?.cellViewModel(indexPath: indexPath)?.id ?? ""
        navigationController?.pushViewController(detailController, animated: true)
         }
 }

@@ -12,6 +12,10 @@ class ProductCellViewModel: ProductCellViewModelType {
     
     private var product: Product
     
+    var id: String {
+        return product.id
+    }
+    
     var titleProduct: String {
         return product.title
     }

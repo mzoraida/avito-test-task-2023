@@ -7,6 +7,17 @@
 
 import Foundation
 
-//class DetailViewModel {
-//    
-//}
+class DetailViewModel {
+    var detailNetworkService = DetailNetworkService()
+    
+    var details: Detail? = nil
+    
+    func getDetail(comletion: @escaping(GetDetailResponse) -> ()) {
+        DetailNetworkService.getDetails { [weak self] response in
+            self?.details = response.details
+            comletion(response)
+        }
+    }
+    
+    
+}

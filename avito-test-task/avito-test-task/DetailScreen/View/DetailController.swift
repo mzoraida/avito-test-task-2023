@@ -9,6 +9,8 @@ import UIKit
 
 class DetailController: UIViewController {
     
+//    var detailViewModel: DetailViewModel?
+    
     var details: Detail? = nil
     
     let imageDetail: UIImageView = {
@@ -78,34 +80,37 @@ class DetailController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+//        detailViewModel = DetailViewModel()
         constraintsViews()
-//        imageDetail.widthAnchor.constraint(equalToConstant: 100).isActive = true
-//        imageDetail.heightAnchor.constraint(equalToConstant: 400).isActive = true
+        
         descriptionLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
         descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
+        
         fetchData()
-//        self.titleDetail.text =  self.details?.title
-//        print(self.titleDetail.text ?? "")
     }
     
     private func fetchData() {
-        DetailNetworkService.getDetails { (response) in
-            self.details = response.details
-            DetailNetworkService.downloadImage(url: self.details?.imageUrl ?? "") { image in
-                self.imageDetail.image = image
+        DetailNetworkService.getDetails { [weak self] (response) in
+//        detailViewModel?.getDetail { [weak self] (response) in
+//            self?.imageDetail.reloadInputViews()
+//            self?.titleDetail.reloadInputViews()
+            self?.details = response.details
+            DetailNetworkService.downloadImage(url: self?.details?.imageUrl ?? "") { image in
+                self?.imageDetail.image = image
             }
-            let location = "Город: " + (self.details?.location ?? " ")
-            let address = "Адрес: " + (self.details?.address ?? " ")
-            let email = "Почта: " + (self.details?.email ?? " ")
-            let number = "Телефон: " + (self.details?.phoneNumber ?? " ")
-            self.price.text = self.details?.price
-            self.titleDetail.text =  self.details?.title
-            self.location.text = location
-            self.address.text = address
-            self.descriptionLabel.text = self.details?.description
-            self.email.text = email
-            self.phoneNumber.text = number
+            let location = "Город: " + (self?.details?.location ?? " ")
+            let address = "Адрес: " + (self?.details?.address ?? " ")
+            let email = "Почта: " + (self?.details?.email ?? " ")
+            let number = "Телефон: " + (self?.details?.phoneNumber ?? " ")
+
+            self?.price.text = self?.details?.price
+            self?.titleDetail.text =  self?.details?.title
+            self?.location.text = location
+            self?.address.text = address
+            self?.descriptionLabel.text = self?.details?.description
+            self?.email.text = email
+            self?.phoneNumber.text = number
         }
     }
     

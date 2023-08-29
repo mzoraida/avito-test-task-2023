@@ -8,11 +8,13 @@
 import Foundation
 import UIKit
 
-class DetailNetworkService {
-    private init() {}
+class DetailNetworkService: NSObject {
+    static var id: String = "1"
+
+    override init() {}
     
     static func getDetails(comletion: @escaping(GetDetailResponse) -> ()) {
-        let jsonUrlString = "https://www.avito.st/s/interns-ios/details/1.json"
+        let jsonUrlString = "https://www.avito.st/s/interns-ios/details/" + id + ".json"
         guard let url = URL(string: jsonUrlString) else { return }
         
         NetworkService.shared.getData(url: url) { (json) in

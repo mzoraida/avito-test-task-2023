@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 protocol ProductCellViewModelType: AnyObject {
+    var id: String { get }
     var titleProduct: String { get }
     var priceProduct: String { get }
     var locationProduct: String { get }
