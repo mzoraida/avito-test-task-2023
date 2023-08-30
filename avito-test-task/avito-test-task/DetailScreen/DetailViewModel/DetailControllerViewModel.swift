@@ -62,7 +62,7 @@ class DetailControllerViewModel: DetailControllerViewModelType {
             return
         }
         
-        DetailNetworkService.downloadImage(url: imageUrl) { image in
+        LoadingImage.downloadImage(url: imageUrl) { image in
             completion(image)
         }
     }

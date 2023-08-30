@@ -46,7 +46,7 @@ class ProductCellViewModel: ProductCellViewModelType {
             return
         }
         
-        ProductNetworkService.downloadImage(url: imageUrl) { image in
+        LoadingImage.downloadImage(url: imageUrl) { image in
             completion(image)
         }
     }
