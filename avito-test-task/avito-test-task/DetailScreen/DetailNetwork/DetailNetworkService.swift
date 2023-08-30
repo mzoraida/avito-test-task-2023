@@ -13,7 +13,7 @@ class DetailNetworkService: NSObject {
 
     override init() {}
     
-    static func getDetails(comletion: @escaping(GetDetailResponse) -> ()) {
+    static func getDetail(comletion: @escaping(GetDetailResponse) -> ()) {
         let jsonUrlString = "https://www.avito.st/s/interns-ios/details/" + id + ".json"
         guard let url = URL(string: jsonUrlString) else { return }
         

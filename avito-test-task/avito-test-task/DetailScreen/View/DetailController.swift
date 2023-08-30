@@ -9,9 +9,24 @@ import UIKit
 
 class DetailController: UIViewController {
     
-//    var detailViewModel: DetailViewModel?
-    
-    var details: Detail? = nil
+    var detailViewModel: DetailViewModelType?
+        
+    weak var detailViewModels: DetailControllerViewModelType? {
+        willSet(detailViewModel) {
+            guard let detailViewModel = detailViewModel else { return }
+            titleDetail.text = detailViewModel.titleDetail
+            price.text = detailViewModel.priceDetail
+            location.text = stringConstant.location + detailViewModel.locationDetail
+            descriptionLabel.text = detailViewModel.descriptionDetail
+            email.text = stringConstant.email + detailViewModel.emailDetail
+            phoneNumber.text = stringConstant.phoneNumber + detailViewModel.phoneNumberDetail
+            address.text = detailViewModel.addressDetail
+            
+            detailViewModel.loadImage { [weak self] image in
+                self?.imageDetail.image = image
+            }
+        }
+    }
     
     let imageDetail: UIImageView = {
         let imageView = UIImageView()
@@ -22,29 +37,29 @@ class DetailController: UIViewController {
     
     private let titleDetail: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.font = UIFont.boldSystemFont(ofSize: sizeText.title)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private let price: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 26)
+        label.font = UIFont.boldSystemFont(ofSize: sizeText.price)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private let location: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 12)
+        label.font = UIFont.systemFont(ofSize: sizeText.location)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private let descriptionTitleLabel: UILabel = {
         let label = UILabel()
-        label.text = "ОПИСАНИЕ"
-        label.font = UIFont.boldSystemFont(ofSize: 24)
+        label.text = stringConstant.descriptionTitleLabel
+        label.font = UIFont.boldSystemFont(ofSize: sizeText.descriptionTitle)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -52,28 +67,28 @@ class DetailController: UIViewController {
     private let descriptionLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
-        label.font = UIFont.systemFont(ofSize: 16)
+        label.font = UIFont.systemFont(ofSize: sizeText.description)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private let email: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 14)
+        label.font = UIFont.boldSystemFont(ofSize: sizeText.email)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private let phoneNumber: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 14)
+        label.font = UIFont.boldSystemFont(ofSize: sizeText.phoneNumber)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private let address: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 12)
+        label.font = UIFont.systemFont(ofSize: sizeText.address)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -81,40 +96,23 @@ class DetailController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        detailViewModel = DetailViewModel()
-        constraintsViews()
+        detailViewModel = DetailViewModel()
         
-        descriptionLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
-        descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
+        setupViews()
+        constraintsForDescription()
+        constraintsViews()
         
         fetchData()
     }
     
     private func fetchData() {
-        DetailNetworkService.getDetails { [weak self] (response) in
-//        detailViewModel?.getDetail { [weak self] (response) in
-//            self?.imageDetail.reloadInputViews()
-//            self?.titleDetail.reloadInputViews()
-            self?.details = response.details
-            DetailNetworkService.downloadImage(url: self?.details?.imageUrl ?? "") { image in
-                self?.imageDetail.image = image
-            }
-            let location = "Город: " + (self?.details?.location ?? " ")
-            let address = "Адрес: " + (self?.details?.address ?? " ")
-            let email = "Почта: " + (self?.details?.email ?? " ")
-            let number = "Телефон: " + (self?.details?.phoneNumber ?? " ")
-
-            self?.price.text = self?.details?.price
-            self?.titleDetail.text =  self?.details?.title
-            self?.location.text = location
-            self?.address.text = address
-            self?.descriptionLabel.text = self?.details?.description
-            self?.email.text = email
-            self?.phoneNumber.text = number
+        detailViewModel?.getDetail { [weak self] (response) in
+            let controllerDetailViewModel = self?.detailViewModel?.controllerViewModel()
+            self?.detailViewModels = controllerDetailViewModel
         }
     }
     
-    private func constraintsViews() {
+    private func setupViews() {
         view.addSubview(imageDetail)
         view.addSubview(price)
         view.addSubview(titleDetail)
@@ -124,36 +122,78 @@ class DetailController: UIViewController {
         view.addSubview(email)
         view.addSubview(phoneNumber)
         view.addSubview(address)
-        
+    }
+    
+    private func constraintsForDescription() {
+        descriptionLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: Constraint.trailingAnchorDescription).isActive = true
+        descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constraint.leadingAnchor).isActive = true
+    }
+    
+    private func constraintsViews() {
         NSLayoutConstraint.activate([
-            imageDetail.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
+            imageDetail.topAnchor.constraint(equalTo: view.topAnchor, constant: Constraint.topAnchorImage),
             imageDetail.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             imageDetail.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             imageDetail.widthAnchor.constraint(equalToConstant: view.bounds.width),
             imageDetail.heightAnchor.constraint(equalToConstant: view.bounds.width),
 
-            price.topAnchor.constraint(equalTo: imageDetail.bottomAnchor, constant: 8),
-            price.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            price.topAnchor.constraint(equalTo: imageDetail.bottomAnchor, constant: Constraint.topAnchorPrice),
+            price.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constraint.leadingAnchor),
             
-            titleDetail.topAnchor.constraint(equalTo: price.bottomAnchor, constant: 4),
-            titleDetail.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            titleDetail.topAnchor.constraint(equalTo: price.bottomAnchor, constant: Constraint.topAnchorTitle),
+            titleDetail.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constraint.leadingAnchor),
             
-            location.topAnchor.constraint(equalTo: titleDetail.bottomAnchor, constant: 4),
-            location.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            location.topAnchor.constraint(equalTo: titleDetail.bottomAnchor, constant: Constraint.topAnchorLocation),
+            location.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constraint.leadingAnchor),
             
-            address.topAnchor.constraint(equalTo: location.bottomAnchor, constant: 1),
-            address.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            address.topAnchor.constraint(equalTo: location.bottomAnchor, constant: Constraint.topAnchorAddress),
+            address.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constraint.leadingAnchor),
             
-            descriptionTitleLabel.topAnchor.constraint(equalTo: address.bottomAnchor, constant: 16),
-            descriptionTitleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            descriptionTitleLabel.topAnchor.constraint(equalTo: address.bottomAnchor, constant: Constraint.topAnchorDescriptionTitle),
+            descriptionTitleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constraint.leadingAnchor),
             
-            descriptionLabel.topAnchor.constraint(equalTo: descriptionTitleLabel.bottomAnchor, constant: 2),
+            descriptionLabel.topAnchor.constraint(equalTo: descriptionTitleLabel.bottomAnchor, constant: Constraint.topAnchorDescription),
             
-            email.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 16),
-            email.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            email.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: Constraint.topAnchorEmail),
+            email.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constraint.leadingAnchor),
             
-            phoneNumber.topAnchor.constraint(equalTo: email.bottomAnchor, constant: 1),
-            phoneNumber.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20)
+            phoneNumber.topAnchor.constraint(equalTo: email.bottomAnchor, constant: Constraint.topAnchorPhoneNumber),
+            phoneNumber.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constraint.leadingAnchor)
         ])
     }
+}
+
+private enum Constraint {
+    static let trailingAnchorDescription: CGFloat = -10
+    static let leadingAnchorDescription: CGFloat = 20
+    
+    static let leadingAnchor: CGFloat = 20
+    
+    static let topAnchorImage: CGFloat = 100
+    static let topAnchorPrice: CGFloat = 8
+    static let topAnchorTitle: CGFloat = 4
+    static let topAnchorLocation: CGFloat = 4
+    static let topAnchorAddress: CGFloat = 1
+    static let topAnchorDescriptionTitle: CGFloat = 16
+    static let topAnchorDescription: CGFloat = 2
+    static let topAnchorEmail: CGFloat = 16
+    static let topAnchorPhoneNumber: CGFloat = 1
+}
+
+private enum sizeText {
+    static let title: CGFloat = 18
+    static let price: CGFloat = 26
+    static let location: CGFloat = 14
+    static let address: CGFloat = 14
+    static let descriptionTitle: CGFloat = 24
+    static let description: CGFloat = 16
+    static let email: CGFloat = 14
+    static let phoneNumber: CGFloat = 14
+}
+
+private enum stringConstant {
+    static let location = "Город "
+    static let email = "Почта: "
+    static let phoneNumber = "Телефон: "
+    static let descriptionTitleLabel = "ОПИСАНИЕ"
 }
