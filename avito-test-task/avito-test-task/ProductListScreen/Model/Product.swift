@@ -10,7 +10,6 @@ import Foundation
 struct Advertisements: Decodable {
     
     let advertisements: [Product]
-    
 }
 
 struct Product: Decodable {

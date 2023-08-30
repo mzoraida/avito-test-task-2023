@@ -10,23 +10,6 @@ import UIKit
 class DetailController: UIViewController {
     
     var detailViewModel: DetailViewModelType?
-        
-    weak var detailViewModels: DetailControllerViewModelType? {
-        willSet(detailViewModel) {
-            guard let detailViewModel = detailViewModel else { return }
-            titleDetail.text = detailViewModel.titleDetail
-            price.text = detailViewModel.priceDetail
-            location.text = stringConstant.location + detailViewModel.locationDetail
-            descriptionLabel.text = detailViewModel.descriptionDetail
-            email.text = stringConstant.email + detailViewModel.emailDetail
-            phoneNumber.text = stringConstant.phoneNumber + detailViewModel.phoneNumberDetail
-            address.text = detailViewModel.addressDetail
-            
-            detailViewModel.loadImage { [weak self] image in
-                self?.imageDetail.image = image
-            }
-        }
-    }
     
     let imageDetail: UIImageView = {
         let imageView = UIImageView()
@@ -105,13 +88,6 @@ class DetailController: UIViewController {
         fetchData()
     }
     
-    private func fetchData() {
-        detailViewModel?.getDetail { [weak self] (response) in
-            let controllerDetailViewModel = self?.detailViewModel?.controllerViewModel()
-            self?.detailViewModels = controllerDetailViewModel
-        }
-    }
-    
     private func setupViews() {
         view.addSubview(imageDetail)
         view.addSubview(price)
@@ -136,7 +112,7 @@ class DetailController: UIViewController {
             imageDetail.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             imageDetail.widthAnchor.constraint(equalToConstant: view.bounds.width),
             imageDetail.heightAnchor.constraint(equalToConstant: view.bounds.width),
-
+            
             price.topAnchor.constraint(equalTo: imageDetail.bottomAnchor, constant: Constraint.topAnchorPrice),
             price.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constraint.leadingAnchor),
             
@@ -160,6 +136,30 @@ class DetailController: UIViewController {
             phoneNumber.topAnchor.constraint(equalTo: email.bottomAnchor, constant: Constraint.topAnchorPhoneNumber),
             phoneNumber.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constraint.leadingAnchor)
         ])
+    }
+    
+    weak var detailViewModels: DetailControllerViewModelType? {
+        willSet(detailViewModel) {
+            guard let detailViewModel = detailViewModel else { return }
+            titleDetail.text = detailViewModel.titleDetail
+            price.text = detailViewModel.priceDetail
+            location.text = stringConstant.location + detailViewModel.locationDetail
+            descriptionLabel.text = detailViewModel.descriptionDetail
+            email.text = stringConstant.email + detailViewModel.emailDetail
+            phoneNumber.text = stringConstant.phoneNumber + detailViewModel.phoneNumberDetail
+            address.text = detailViewModel.addressDetail
+            
+            detailViewModel.loadImage { [weak self] image in
+                self?.imageDetail.image = image
+            }
+        }
+    }
+    
+    private func fetchData() {
+        detailViewModel?.getDetail { [weak self] (response) in
+            let controllerDetailViewModel = self?.detailViewModel?.controllerViewModel()
+            self?.detailViewModels = controllerDetailViewModel
+        }
     }
 }
 

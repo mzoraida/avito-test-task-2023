@@ -10,7 +10,7 @@ import UIKit
 
 class DetailNetworkService: NSObject {
     static var id: String = "1"
-
+    
     override init() {}
     
     static func getDetail(comletion: @escaping(GetDetailResponse) -> ()) {

@@ -11,9 +11,7 @@ class GetDetailResponse {
     let details: Detail
     
     init(json: [String: Any]) throws {
-        guard let details = Detail(dict: json) else {
-            throw NetworkError.failInternetError
-        }
+        guard let details = Detail(dict: json) else { throw NetworkError.failInternetError }
         self.details = details
     }
 }

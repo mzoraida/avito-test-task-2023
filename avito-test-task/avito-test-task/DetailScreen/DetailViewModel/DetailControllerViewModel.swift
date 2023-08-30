@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 class DetailControllerViewModel: DetailControllerViewModelType {
- 
+    
     private var detail: Detail
     
     var id: String {

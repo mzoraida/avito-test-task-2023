@@ -10,7 +10,7 @@ import UIKit
 class ProductListController: UIViewController {
     
     var productViewModel: ProductViewModelType?
-        
+    
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -77,12 +77,12 @@ extension ProductListController: UICollectionViewDataSource {
         return cell
     }
     
-   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-            
-       guard let detailController = storyboard?.instantiateViewController(withIdentifier: "DetailController") as? DetailController else { return }
-       DetailNetworkService.id = productViewModel?.cellViewModel(indexPath: indexPath)?.id ?? ""
-       navigationController?.pushViewController(detailController, animated: true)
-        }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        guard let detailController = storyboard?.instantiateViewController(withIdentifier: Constant.idDetailController) as? DetailController else { return }
+        DetailNetworkService.id = productViewModel?.cellViewModel(indexPath: indexPath)?.id ?? ""
+        navigationController?.pushViewController(detailController, animated: true)
+    }
 }
 
 extension ProductListController: UICollectionViewDelegateFlowLayout {
@@ -110,4 +110,5 @@ private enum Constant {
     static let coefficientHeight = 0.6
     
     static let idProductCell = "productCell"
+    static let idDetailController = "DetailController"
 }
