@@ -11,20 +11,7 @@ class ProductListController: UIViewController {
     
     var productViewModel: ProductViewModelType?
     private var retryView: RetryView?
-    
-    let loadingView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .white
-        return view
-    }()
-    
-    let loadingIndicator: UIActivityIndicatorView = {
-        let indicator = UIActivityIndicatorView(style: .medium)
-        indicator.translatesAutoresizingMaskIntoConstraints = false
-        return indicator
-    }()
-    
+    private var loadingView: LoadingView?
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -62,28 +49,6 @@ class ProductListController: UIViewController {
         ])
     }
     
-    private func showLoadingView() {
-        view.addSubview(loadingView)
-        loadingView.addSubview(loadingIndicator)
-        
-        NSLayoutConstraint.activate([
-            loadingView.topAnchor.constraint(equalTo: view.topAnchor),
-            loadingView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            loadingView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            loadingView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            
-            loadingIndicator.centerXAnchor.constraint(equalTo: loadingView.centerXAnchor),
-            loadingIndicator.centerYAnchor.constraint(equalTo: loadingView.centerYAnchor)
-        ])
-        
-        loadingIndicator.startAnimating()
-    }
-    
-    private func hideLoadingView() {
-        loadingIndicator.stopAnimating()
-        loadingView.removeFromSuperview()
-    }
-    
     private func fetchData() {
         showLoadingView()
         
@@ -100,6 +65,16 @@ class ProductListController: UIViewController {
                 }
             }
         }
+    }
+    
+    private func showLoadingView() {
+        loadingView = LoadingView(frame: view.bounds)
+        view.addSubview(loadingView!)
+    }
+    
+    private func hideLoadingView() {
+        loadingView?.removeFromSuperview()
+        loadingView = nil
     }
     
     private func showRetryView() {
