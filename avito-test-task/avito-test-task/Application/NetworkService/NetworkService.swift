@@ -12,19 +12,26 @@ class NetworkService {
     private init() {}
     static let shared = NetworkService()
     
-    public func getData(url: URL, completion: @escaping (Any) -> ()) {
+    public func getData(url: URL, completion: @escaping (Result<Any, Error>) -> ()) {
         let session = URLSession.shared
         
         session.dataTask(with: url) { (data, response, error) in
-            guard let data = data else { return }
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            guard let data = data else {
+                let error = NSError(domain: "NetworkServiceErrorDomain", code: 0, userInfo: [NSLocalizedDescriptionKey: "Empty response data"])
+                completion(.failure(error))
+                return
+            }
             
             do {
                 let json = try JSONSerialization.jsonObject(with: data, options: [])
-                DispatchQueue.main.async {
-                    completion(json)
-                }
+                completion(.success(json))
             } catch {
-                print(error)
+                completion(.failure(error))
             }
         }.resume()
     }

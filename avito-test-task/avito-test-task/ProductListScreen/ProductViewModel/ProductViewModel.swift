@@ -13,10 +13,15 @@ class ProductViewModel: ProductViewModelType {
     
     var products = [Product]()
     
-    func getProducts(comletion: @escaping(GetProductResponse) -> ()) {
-        ProductNetworkService.getProducts { [weak self] response in
-            self?.products = response.products
-            comletion(response)
+    func getProducts(comletion: @escaping(Result<GetProductResponse, Error>) -> ()) {
+        ProductNetworkService.getProducts { [weak self] result in
+            switch result {
+            case .success(let response):
+                self?.products = response.products
+                comletion(.success(response))
+            case .failure(let error):
+                comletion(.failure(error))
+            }
         }
     }
     

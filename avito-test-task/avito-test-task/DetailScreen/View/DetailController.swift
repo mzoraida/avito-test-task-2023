@@ -10,6 +10,20 @@ import UIKit
 class DetailController: UIViewController {
     
     var detailViewModel: DetailViewModelType?
+    private var retryView: RetryView?
+    
+    let loadingView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .white
+        return view
+    }()
+    
+    let loadingIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .medium)
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        return indicator
+    }()
     
     let imageDetail: UIImageView = {
         let imageView = UIImageView()
@@ -155,11 +169,63 @@ class DetailController: UIViewController {
         }
     }
     
+    private func showLoadingView() {
+        view.addSubview(loadingView)
+        loadingView.addSubview(loadingIndicator)
+        
+        NSLayoutConstraint.activate([
+            loadingView.topAnchor.constraint(equalTo: view.topAnchor),
+            loadingView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            loadingView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            loadingView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
+            loadingIndicator.centerXAnchor.constraint(equalTo: loadingView.centerXAnchor),
+            loadingIndicator.centerYAnchor.constraint(equalTo: loadingView.centerYAnchor)
+        ])
+        
+        loadingIndicator.startAnimating()
+    }
+    
+    private func hideLoadingView() {
+        loadingIndicator.stopAnimating()
+        loadingView.removeFromSuperview()
+    }
+    
     private func fetchData() {
-        detailViewModel?.getDetail { [weak self] (response) in
-            let controllerDetailViewModel = self?.detailViewModel?.controllerViewModel()
-            self?.detailViewModels = controllerDetailViewModel
+        showLoadingView()
+        
+        detailViewModel?.getDetail { [weak self] result in
+            
+            DispatchQueue.main.async {
+                self?.hideLoadingView()
+                switch result {
+                case .success(_):
+                    let controllerDetailViewModel = self?.detailViewModel?.controllerViewModel()
+                    self?.detailViewModels = controllerDetailViewModel
+                case .failure(let error):
+                    self?.showRetryView()
+                    print("Error fetching data: \(error)")
+                }
+            }
         }
+    }
+    
+    private func showRetryView() {
+        retryView = RetryView(frame: view.bounds)
+        retryView?.delegate = self
+        view.addSubview(retryView!)
+    }
+    
+    private func hideRetryView() {
+        retryView?.removeFromSuperview()
+        retryView = nil
+    }
+}
+
+extension DetailController: RetryViewDelegate {
+    func retryButtonTapped() {
+        hideRetryView()
+        fetchData()
     }
 }
 

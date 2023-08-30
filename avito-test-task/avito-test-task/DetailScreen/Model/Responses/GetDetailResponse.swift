@@ -15,5 +15,3 @@ class GetDetailResponse {
         self.details = details
     }
 }
-
-

@@ -10,6 +10,21 @@ import UIKit
 class ProductListController: UIViewController {
     
     var productViewModel: ProductViewModelType?
+    private var retryView: RetryView?
+    
+    let loadingView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .white
+        return view
+    }()
+    
+    let loadingIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .medium)
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        return indicator
+    }()
+    
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -47,12 +62,62 @@ class ProductListController: UIViewController {
         ])
     }
     
-    func fetchData() {
-        productViewModel?.getProducts { [weak self] response in
+    private func showLoadingView() {
+        view.addSubview(loadingView)
+        loadingView.addSubview(loadingIndicator)
+        
+        NSLayoutConstraint.activate([
+            loadingView.topAnchor.constraint(equalTo: view.topAnchor),
+            loadingView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            loadingView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            loadingView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
+            loadingIndicator.centerXAnchor.constraint(equalTo: loadingView.centerXAnchor),
+            loadingIndicator.centerYAnchor.constraint(equalTo: loadingView.centerYAnchor)
+        ])
+        
+        loadingIndicator.startAnimating()
+    }
+    
+    private func hideLoadingView() {
+        loadingIndicator.stopAnimating()
+        loadingView.removeFromSuperview()
+    }
+    
+    private func fetchData() {
+        showLoadingView()
+        
+        productViewModel?.getProducts { [weak self] result in
             DispatchQueue.main.async {
-                self?.collectionView.reloadData()
+                self?.hideLoadingView()
+                
+                switch result {
+                case .success(_):
+                    self?.collectionView.reloadData()
+                case .failure(let error):
+                    self?.showRetryView()
+                    print("Error fetching data: \(error)")
+                }
             }
         }
+    }
+    
+    private func showRetryView() {
+        retryView = RetryView(frame: view.bounds)
+        retryView?.delegate = self
+        view.addSubview(retryView!)
+    }
+    
+    private func hideRetryView() {
+        retryView?.removeFromSuperview()
+        retryView = nil
+    }
+}
+
+extension ProductListController: RetryViewDelegate {
+    func retryButtonTapped() {
+        hideRetryView()
+        fetchData()
     }
 }
 

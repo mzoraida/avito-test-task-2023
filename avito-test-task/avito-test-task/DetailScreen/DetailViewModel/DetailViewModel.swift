@@ -12,10 +12,15 @@ class DetailViewModel: DetailViewModelType {
     
     var details: Detail? = nil
     
-    func getDetail(comletion: @escaping(GetDetailResponse) -> ()) {
-        DetailNetworkService.getDetail { [weak self] response in
-            self?.details = response.details
-            comletion(response)
+    func getDetail(comletion: @escaping(Result<GetDetailResponse, Error>) -> ()) {
+        DetailNetworkService.getDetail { [weak self] result in
+            switch result {
+            case .success(let response):
+                self?.details = response.details
+                comletion(.success(response))
+            case .failure(let error):
+                comletion(.failure(error))
+            }
         }
     }
     

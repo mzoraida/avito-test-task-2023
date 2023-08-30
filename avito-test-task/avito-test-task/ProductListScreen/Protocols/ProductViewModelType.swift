@@ -9,6 +9,6 @@ import Foundation
 
 protocol ProductViewModelType {
     func numberOfItemsInSection() -> Int
-    func getProducts(comletion: @escaping(GetProductResponse) -> ())
+    func getProducts(comletion: @escaping(Result<GetProductResponse, Error>) -> ())
     func cellViewModel(indexPath: IndexPath) -> ProductCellViewModelType?
 }
