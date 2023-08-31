@@ -29,7 +29,7 @@
 
 ### Инструкция по запуску приложения
 
-1. Склонируйте или скачайте актуальную версию данного репозитория изи ветки main.
+1. Склонируйте или скачайте актуальную версию данного репозитория из ветки main.
 
 ```git clone https://github.com/mzoraida/avito-test-task-2023.git```
 
@@ -37,26 +37,26 @@
 
 ```cd avito-test-task-2023/avito-test-task```
 
-3. После этого открой `avito-test-task.xcodeproj` можете открыть через finder, либо ввести в терминале команду:
+3. После этого открой `avito-test-task.xcodeproj` в Xcode. Можете открыть через finder, либо ввести в терминале команду:
 
 ```open avito-test-task.xcodeproj```
 
 4. Соберите и запустите проект на симуляторе iOS или реальном устройстве.
 
-## Визуальная состовляющая проекта
+### Визуальная состовляющая проекта
 
-1. Экран со списком товаров 
+1. Экран со списком товаров: 
 
 ![product list](screenshots/ProductListScreen.png)
 
-2. Экран с детальной информацией о товаре 
+2. Экран с детальной информацией о товаре: 
 
 ![product list](screenshots/DetailScreen.png)
 
-3. Экран загрузки 
+3. Экран загрузки: 
 
 ![product list](screenshots/LoadingScreen.png)
 
-4. Экран ошибки 
+4. Экран ошибки: 
 
 ![product list](screenshots/ErrorScreen.png)
