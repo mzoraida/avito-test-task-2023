@@ -226,11 +226,11 @@ private enum Constraint {
 }
 
 private enum sizeText {
-    static let title: CGFloat = 18
-    static let price: CGFloat = 26
+    static let title: CGFloat = 22
+    static let price: CGFloat = 24
     static let location: CGFloat = 14
     static let address: CGFloat = 14
-    static let descriptionTitle: CGFloat = 24
+    static let descriptionTitle: CGFloat = 20
     static let description: CGFloat = 16
     static let email: CGFloat = 14
     static let phoneNumber: CGFloat = 14
@@ -240,5 +240,5 @@ private enum stringConstant {
     static let location = "Город "
     static let email = "Почта: "
     static let phoneNumber = "Телефон: "
-    static let descriptionTitleLabel = "ОПИСАНИЕ"
+    static let descriptionTitleLabel = "Описание"
 }

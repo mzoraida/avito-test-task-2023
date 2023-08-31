@@ -109,6 +109,7 @@ extension ProductListController: UICollectionViewDelegate {
 extension ProductListController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.idProductCell, for: indexPath) as! ProductCell
         
         guard let productViewModel = productViewModel else { return UICollectionViewCell() }
