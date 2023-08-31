@@ -12,14 +12,14 @@ class DetailViewModel: DetailViewModelType {
     
     var details: Detail? = nil
     
-    func getDetail(comletion: @escaping(Result<GetDetailResponse, Error>) -> ()) {
+    func getDetail(completion: @escaping(Result<GetDetailResponse, Error>) -> ()) {
         DetailNetworkService.getDetail { [weak self] result in
             switch result {
             case .success(let response):
                 self?.details = response.details
-                comletion(.success(response))
+                completion(.success(response))
             case .failure(let error):
-                comletion(.failure(error))
+                completion(.failure(error))
             }
         }
     }

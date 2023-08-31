@@ -15,16 +15,25 @@ class LoadingView: UIView {
         view.backgroundColor = .white
         return view
     }()
-
+    
     private let loadingIndicator: UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView(style: .medium)
         indicator.translatesAutoresizingMaskIntoConstraints = false
         return indicator
     }()
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        setupView()
+        loadingIndicator.startAnimating()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setupView() {
         addSubview(loadingView)
         loadingView.addSubview(loadingIndicator)
         
@@ -37,11 +46,5 @@ class LoadingView: UIView {
             loadingIndicator.centerXAnchor.constraint(equalTo: loadingView.centerXAnchor),
             loadingIndicator.centerYAnchor.constraint(equalTo: loadingView.centerYAnchor)
         ])
-        
-        loadingIndicator.startAnimating()
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }

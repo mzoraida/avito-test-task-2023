@@ -8,6 +8,6 @@
 import Foundation
 
 protocol DetailViewModelType {
-    func getDetail(comletion: @escaping(Result<GetDetailResponse, Error>) -> ())
+    func getDetail(completion: @escaping(Result<GetDetailResponse, Error>) -> ())
     func controllerViewModel() -> DetailControllerViewModelType?
 }

@@ -13,7 +13,7 @@ class ProductNetworkService: NSObject {
     
     override init () {}
     
-    static func getProducts(comletion: @escaping(Result<GetProductResponse, Error>) -> ()) {
+    static func getProducts(completion: @escaping(Result<GetProductResponse, Error>) -> ()) {
         guard let url = URL(string: jsonUrlString) else { return }
         
         NetworkService.shared.getData(url: url) { result in
@@ -22,17 +22,17 @@ class ProductNetworkService: NSObject {
                 do {
                     if let jsonDict = json as? [String: Any] {
                         let response = try GetProductResponse(json: jsonDict)
-                        comletion(.success(response))
+                        completion(.success(response))
                     } else {
                         let error = NSError(domain: "Invalid JSON", code: 0, userInfo: nil)
-                        comletion(.failure(error))
+                        completion(.failure(error))
                     }
                 } catch {
                     print(error)
-                    comletion(.failure(error))
+                    completion(.failure(error))
                 }
             case .failure(let error):
-                comletion(.failure(error))
+                completion(.failure(error))
             }
         }
     }

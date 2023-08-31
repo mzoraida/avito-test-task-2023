@@ -13,7 +13,7 @@ class DetailNetworkService: NSObject {
     
     override init() {}
     
-    static func getDetail(comletion: @escaping(Result<GetDetailResponse, Error>) -> ()) {
+    static func getDetail(completion: @escaping(Result<GetDetailResponse, Error>) -> ()) {
         let jsonUrlString = "https://www.avito.st/s/interns-ios/details/" + id + ".json"
         guard let url = URL(string: jsonUrlString) else { return }
         
@@ -23,17 +23,17 @@ class DetailNetworkService: NSObject {
                 do {
                     if let jsonDict = json as? [String: Any] {
                         let response = try GetDetailResponse(json: jsonDict)
-                        comletion(.success(response))
+                        completion(.success(response))
                     } else {
                         let error = NSError(domain: "Invalid JSON", code: 0, userInfo: nil)
-                        comletion(.failure(error))
+                        completion(.failure(error))
                     }
                 } catch {
                     print(error)
-                    comletion(.failure(error))
+                    completion(.failure(error))
                 }
             case .failure(let error):
-                comletion(.failure(error))
+                completion(.failure(error))
             }
         }
     }
